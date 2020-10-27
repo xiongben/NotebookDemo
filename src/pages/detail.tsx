@@ -4,11 +4,11 @@ import * as React from 'react';
 import {
     SafeAreaView,
     StyleSheet,
-    ScrollView,
     View,
     Text,
     TextInput,
-    Button, Image,
+    Button,
+    Pressable, Image,
 } from 'react-native';
 import {Stack} from "../router/router";
 
@@ -16,21 +16,40 @@ import {Stack} from "../router/router";
 function DetailContent(props:any) {
     // console.log(props.data)
     const [value, onChangeText] = React.useState('Useless Placeholder');
+    function _pressfn(){
+        console.log(value)
+    }
     return(
         <SafeAreaView>
             <View>
-                <View style={styles.infoItem} >
-                    <Image style={styles.icon1} source={require('./../assets/img/mark_icon.png')}/>
-                    <View style={styles.itemContent}>
-                        <Text style={styles.itemContentText} numberOfLines={2}>{value}</Text>
-                    </View>
+                <View style={styles.detialHead} >
+                    <Pressable onPress={()=>_pressfn()}>
+                        <View style={styles.btn}>
+                            <Text style={styles.btnText}>Done</Text>
+                        </View>
+                    </Pressable>
+                    <Pressable onPress={()=>_pressfn()}>
+                        <View style={styles.btn}>
+                            <Text style={styles.btnText}>Save</Text>
+                        </View>
+                    </Pressable>
+                    <Pressable onPress={()=>_pressfn()}>
+                        <View style={styles.btn}>
+                            <Text style={styles.btnText}>Delete</Text>
+                        </View>
+                    </Pressable>
 
                 </View>
-                <TextInput
-                    style={{ height: 40, borderColor: 'gray', borderWidth: 1 }}
-                    onChangeText={text => onChangeText(text)}
-                    value={value}
-                />
+                <View style={styles.inputArea}>
+                    <TextInput
+                        style={styles.detailText}
+                        multiline={true}
+                        autoFocus={true}
+                        onChangeText={text => onChangeText(text)}
+                        value={value}
+                    />
+                </View>
+
             </View>
         </SafeAreaView>
     )
@@ -69,30 +88,40 @@ function DetailScreen() {
 
 const styles = StyleSheet.create({
 
-    infoItem:{
+    detialHead:{
         width: '100%',
-        height: 80,
-        backgroundColor: 'yellow',
-        borderStyle: 'solid',borderBottomWidth:1,
-        borderBottomColor: '#333',
+        height: 90,
         flexDirection: 'row',
         justifyContent: 'space-around',
         alignItems: 'center',
     },
-    icon1:{
-        width: 40,
-        height: 40,
+    btn:{
+        width: 80,
+        height: 36,
+        borderRadius: 8,
+        borderStyle: 'solid',borderWidth:1,borderColor:'#333',
+        // backgroundColor: 'yellow',
     },
-    itemContent:{
-        width: '70%',
-        height: 60,
-        // backgroundColor: 'blue',
-        justifyContent: 'space-around',
+    btnText:{
+        width:'100%',
+        height: 36,
+        lineHeight: 36,
+        textAlign: 'center',
+        fontSize: 14,
+        fontWeight: 'bold',
     },
-    itemContentText:{
-
+    inputArea:{
+        width: '90%',
+        height: '85%',
+        backgroundColor: 'pink',
+        marginLeft: '5%',
+    },
+    detailText:{
+        // height:'100%',
+        fontSize: 18,
+        lineHeight: 28,
+        backgroundColor: '#367'
     }
-
 });
 
 

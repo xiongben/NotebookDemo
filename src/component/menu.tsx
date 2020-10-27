@@ -10,28 +10,42 @@ import {
     Text,
     TextInput,
     Button,
+    Pressable,
 } from 'react-native';
 
 
 function Menu(props:any) {
+    function _pressfn(){
+        console.log("====dianji=====")
+    }
+
    return(
        <View style={styles.menuBox}>
-           <View style={styles.needTodo}>
-               <Image style={styles.icon1} source={require('./../assets/img/warn_icon.png')}/>
-               <Text style={styles.todoText}> 9999</Text>
-           </View>
-           <View style={styles.menuLi}>
-               <Image style={styles.icon1} source={require('./../assets/img/add_icon.png')}/>
-           </View>
-           <View style={styles.menuLi}>
-               <Image style={styles.icon1} source={require('./../assets/img/list_icon.png')}/>
-           </View>
-           <View style={styles.menuLi}>
-               <Button
-                   title="Go to Details"
-                   onPress={() => props.nav.navigate('Detail')}
-               />
-           </View>
+           <Pressable onPress={()=>_pressfn()}>
+               <View style={styles.needTodo}>
+                   <Image style={styles.icon1} source={require('./../assets/img/warn_icon.png')}/>
+                   <Text style={styles.todoText}> 9999</Text>
+               </View>
+           </Pressable>
+           <Pressable onPress={()=>_pressfn()}>
+               <View style={styles.menuLi}>
+                   <Image style={styles.icon1} source={require('./../assets/img/add_icon.png')}/>
+               </View>
+           </Pressable>
+           <Pressable onPress={()=>_pressfn()}>
+               <View style={styles.menuLi}>
+                   <Image style={styles.icon1} source={require('./../assets/img/list_icon.png')}/>
+               </View>
+           </Pressable>
+           <Pressable onPress={()=>_pressfn()}>
+               <View style={styles.menuLi}>
+                   <Button
+                       title="Go to Details"
+                       onPress={() => props.nav.navigate('Detail')}
+                   />
+               </View>
+           </Pressable>
+
        </View>
    )
 }

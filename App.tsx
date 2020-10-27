@@ -27,6 +27,7 @@ import {
 } from 'react-native/Libraries/NewAppScreen';
 
 import {Router} from "./src/router/router";
+import {ListReduxComponent} from './src/reduxComponent/list'
 
 declare const global: {HermesInternal: null | {}};
 
@@ -34,9 +35,9 @@ declare const global: {HermesInternal: null | {}};
 
 const App = () => {
   return (
-    <>
+    <ListReduxComponent>
       <Router/>
-    </>
+    </ListReduxComponent>
   );
 };
 

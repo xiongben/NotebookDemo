@@ -13,12 +13,12 @@ import {
 
 
 function OrderItem(props:any) {
-    // console.log(props.data)
+    let {data} = props;
   return(
       <View style={styles.infoItem} >
           <Image style={styles.icon1} source={require('./../assets/img/mark_icon.png')}/>
           <View style={styles.itemContent}>
-              <Text style={styles.itemContentText} numberOfLines={2}>一月又一月</Text>
+              <Text style={styles.itemContentText} numberOfLines={2}>{data.text}</Text>
           </View>
 
       </View>

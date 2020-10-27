@@ -22,27 +22,35 @@ import {
 import {Stack} from './../router/router'
 import OrderItem from "../component/orderItem";
 import Menu from "../component/menu";
-import {useState} from "react";
+import {useState, useContext, useEffect} from "react";
+import {NoteContext,UPDATE_COLOR} from './../reduxComponent/list';
 
 
 function ListPage({navigation}:any) {
-    const [itemDataArr,setItemDataArr] = useState([1,2,3,4,5,6,7,8,9,10,11,12])
+    const [itemDataArr,setItemDataArr] = useState([1,2,3,4,5])
+    let {state}:any = useContext(NoteContext);
+    console.log(state)
 
-  return(
-      <SafeAreaView>
-          <ScrollView
-              contentInsetAdjustmentBehavior="automatic"
-              style={styles.scrollView}>
-              <Menu nav={navigation}/>
-              {itemDataArr.map((item,index)=>{
-                  return(
-                      <OrderItem data={item} key={index}/>
-                  )
-              })}
-          </ScrollView>
+    useEffect(()=>{
 
-      </SafeAreaView>
-  )
+    },[])
+
+      return(
+          <SafeAreaView>
+              <ScrollView
+                  contentInsetAdjustmentBehavior="automatic"
+                  style={styles.scrollView}>
+                  <Menu nav={navigation}/>
+
+                  {(state.noteList as Array<object>).map((item,index)=>{
+                      return(
+                          <OrderItem data={item} key={index}/>
+                      )
+                  })}
+              </ScrollView>
+
+          </SafeAreaView>
+      )
 }
 
 function ListScreen() {
@@ -71,6 +79,29 @@ function ListScreen() {
         </Stack.Navigator>
     );
 }
+
+// const ShowColor =(props:any)=>{
+//     let colordata = useContext(NoteContext);
+//     return (
+//         <Text>color: {(colordata as any).color}</Text>
+//     )
+// }
+//
+// const ColorButtons = (props:any) =>{
+//     const noteContext = useContext(NoteContext)
+//     const dispatch = (noteContext as any).dispatch
+//
+//     function _pressfn(data:string){
+//         console.log("====dianji=====")
+//         dispatch({type:UPDATE_COLOR,color:data})
+//     }
+//     return (
+//         <View>
+//             <Button title="red color" onPress={()=>_pressfn("red")}></Button>
+//             <Button title="blue color" onPress={()=>_pressfn("blue")}></Button>
+//         </View>
+//     )
+// }
 
 const styles = StyleSheet.create({
     scrollView: {
