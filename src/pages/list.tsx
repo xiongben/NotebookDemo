@@ -11,13 +11,7 @@ import {
     Button,
 } from 'react-native';
 
-import {
-    Header,
-    LearnMoreLinks,
-    Colors,
-    DebugInstructions,
-    ReloadInstructions,
-} from 'react-native/Libraries/NewAppScreen';
+
 
 import {Stack} from './../router/router'
 import OrderItem from "../component/orderItem";
@@ -29,7 +23,8 @@ import {NoteContext,UPDATE_COLOR} from './../reduxComponent/list';
 function ListPage({navigation}:any) {
     const [itemDataArr,setItemDataArr] = useState([1,2,3,4,5])
     let {state}:any = useContext(NoteContext);
-    console.log(state)
+    console.log("=======list========")
+    console.log(state.noteList)
 
     useEffect(()=>{
 
@@ -44,7 +39,7 @@ function ListPage({navigation}:any) {
 
                   {(state.noteList as Array<object>).map((item,index)=>{
                       return(
-                          <OrderItem data={item} key={index}/>
+                          <OrderItem data={item} key={index} />
                       )
                   })}
               </ScrollView>
@@ -80,28 +75,7 @@ function ListScreen() {
     );
 }
 
-// const ShowColor =(props:any)=>{
-//     let colordata = useContext(NoteContext);
-//     return (
-//         <Text>color: {(colordata as any).color}</Text>
-//     )
-// }
-//
-// const ColorButtons = (props:any) =>{
-//     const noteContext = useContext(NoteContext)
-//     const dispatch = (noteContext as any).dispatch
-//
-//     function _pressfn(data:string){
-//         console.log("====dianji=====")
-//         dispatch({type:UPDATE_COLOR,color:data})
-//     }
-//     return (
-//         <View>
-//             <Button title="red color" onPress={()=>_pressfn("red")}></Button>
-//             <Button title="blue color" onPress={()=>_pressfn("blue")}></Button>
-//         </View>
-//     )
-// }
+
 
 const styles = StyleSheet.create({
     scrollView: {

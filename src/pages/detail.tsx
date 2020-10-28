@@ -11,33 +11,113 @@ import {
     Pressable, Image,
 } from 'react-native';
 import {Stack} from "../router/router";
+import {useState, useContext, useEffect} from "react";
+import {NoteContext, ADD_NOTE, UPDATE_NOTE, DELETE_NOTE} from './../reduxComponent/list';
+import { useNavigation } from '@react-navigation/native';
 
 
 function DetailContent(props:any) {
-    // console.log(props.data)
-    const [value, onChangeText] = React.useState('Useless Placeholder');
+    // console.log(props.route)
+    const [value, onChangeText] = useState('Useless Placeholder');
+    const [targetItem, setTargetItem]:any = useState({});
+    const [routerParams,setRouterParams] = useState(props.route.params);
+
+    let {state,dispatch}:any = useContext(NoteContext);
+    const navigation = useNavigation();
+
+    useEffect(()=>{
+       let type = routerParams.type;
+        if(type == 'edit'){
+            let targetItem = state.noteList.filter((item:any)=>item.id== routerParams.id);
+            setTargetItem(targetItem[0]);
+            onChangeText(targetItem[0].text);
+        }
+    },[])
+
     function _pressfn(){
-        console.log(value)
+        // console.log(value)
     }
+
+    function _saveDetail() {
+        let type = routerParams.type;
+        let lastId = state.lastId;
+        let actionParams:object;
+        let newNoteList = new Array();
+        newNoteList = state.noteList;
+        if(type == 'add'){
+            newNoteList.push({
+                id:lastId+1,
+                status: 0,  //0:need to do ;1:have done
+                text: value,
+                chooseStatus: 0, //0:not choosed; 1:choosed
+            })
+            actionParams = {
+                newLastId: lastId+1,
+                newNoteList: newNoteList,
+            }
+            dispatch({type:ADD_NOTE,itemData:actionParams})
+        }else if(type == 'edit'){
+            newNoteList.map((item,index)=>{
+                if(item.id == routerParams.id){
+                    item.text = value;
+                }
+            });
+            dispatch({type:UPDATE_NOTE,newNoteList:newNoteList});
+        }
+        navigation.navigate('List');
+    }
+
+    function _doneDetail() {
+        let newNoteList = new Array();
+        newNoteList = state.noteList;
+        newNoteList.map((item:any)=>{
+            if(item.id == routerParams.id){
+                item.status = 1;
+            }
+        });
+        dispatch({type:UPDATE_NOTE,newNoteList:newNoteList});
+        navigation.navigate('List');
+    }
+
+    function _delNote() {
+        let newNoteList = new Array();
+        newNoteList = state.noteList;
+        newNoteList = newNoteList.filter((item:any)=>item.id != routerParams.id);
+        dispatch({type:DELETE_NOTE,newNoteList:newNoteList});
+        navigation.navigate('List');
+    }
+
     return(
         <SafeAreaView>
             <View>
                 <View style={styles.detialHead} >
-                    <Pressable onPress={()=>_pressfn()}>
-                        <View style={styles.btn}>
-                            <Text style={styles.btnText}>Done</Text>
-                        </View>
-                    </Pressable>
-                    <Pressable onPress={()=>_pressfn()}>
+                    {
+                        routerParams.type == 'edit' && targetItem.status == 0?
+                            (
+                                <Pressable onPress={()=>_doneDetail()}>
+                                    <View style={styles.btn}>
+                                        <Text style={styles.btnText}>Done</Text>
+                                    </View>
+                                </Pressable>
+                            ):null
+                    }
+
+                    <Pressable onPress={()=>_saveDetail()}>
                         <View style={styles.btn}>
                             <Text style={styles.btnText}>Save</Text>
                         </View>
                     </Pressable>
-                    <Pressable onPress={()=>_pressfn()}>
-                        <View style={styles.btn}>
-                            <Text style={styles.btnText}>Delete</Text>
-                        </View>
-                    </Pressable>
+                    {
+                        routerParams.type == 'edit'?
+                            (
+                                <Pressable onPress={()=>_delNote()}>
+                                    <View style={styles.btn}>
+                                        <Text style={styles.btnText}>Delete</Text>
+                                    </View>
+                                </Pressable>
+                            ):null
+                    }
+
 
                 </View>
                 <View style={styles.inputArea}>
@@ -56,11 +136,12 @@ function DetailContent(props:any) {
 }
 
 
-function DetailScreen() {
+function DetailScreen({navigation,route}:any) {
+    // console.log(route)
     return (
         <Stack.Navigator >
             <Stack.Screen
-                name="Home"
+                name="DetailPage"
                 component={DetailContent}
                 options={{
                     title: 'detail Page',

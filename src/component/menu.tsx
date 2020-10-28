@@ -12,11 +12,39 @@ import {
     Button,
     Pressable,
 } from 'react-native';
+import {useState, useContext, useEffect} from "react";
+import {NoteContext,SHOW_CHOOSE_ICON} from './../reduxComponent/list';
 
 
 function Menu(props:any) {
+    let {state,dispatch}:any = useContext(NoteContext);
+    let [needDoneNum,setNeedDoneNum] = useState(0);
+
+    useEffect(()=>{
+        let targetItem = state.noteList.filter((item:any)=>item.status== 0);
+        setNeedDoneNum(targetItem.length);
+
+    },[state])
+
     function _pressfn(){
         console.log("====dianji=====")
+    }
+
+    function _showChooseIcon() {
+        let newShowChooseIcon = !state.showChooseIcon;
+        dispatch({type:SHOW_CHOOSE_ICON,showChooseStatus:newShowChooseIcon})
+    }
+
+    function _addNote() {
+        let paramsData:object = {
+            type: 'add',
+        }
+        props.nav.navigate('Detail',{screen: 'DetailPage',params:paramsData})
+    }
+
+    function _showDoneList() {
+        let newShowChooseIcon = !state.showChooseIcon;
+        dispatch({type:SHOW_CHOOSE_ICON,showChooseStatus:newShowChooseIcon})
     }
 
    return(
@@ -24,15 +52,15 @@ function Menu(props:any) {
            <Pressable onPress={()=>_pressfn()}>
                <View style={styles.needTodo}>
                    <Image style={styles.icon1} source={require('./../assets/img/warn_icon.png')}/>
-                   <Text style={styles.todoText}> 9999</Text>
+                   <Text style={styles.todoText}> {needDoneNum}</Text>
                </View>
            </Pressable>
-           <Pressable onPress={()=>_pressfn()}>
+           <Pressable onPress={()=>_addNote()}>
                <View style={styles.menuLi}>
                    <Image style={styles.icon1} source={require('./../assets/img/add_icon.png')}/>
                </View>
            </Pressable>
-           <Pressable onPress={()=>_pressfn()}>
+           <Pressable onPress={()=>_showChooseIcon()}>
                <View style={styles.menuLi}>
                    <Image style={styles.icon1} source={require('./../assets/img/list_icon.png')}/>
                </View>
@@ -41,7 +69,7 @@ function Menu(props:any) {
                <View style={styles.menuLi}>
                    <Button
                        title="Go to Details"
-                       onPress={() => props.nav.navigate('Detail')}
+                       onPress={() => props.nav.navigate('Detail',{screen: 'DetailPage',params:{type:123}})}
                    />
                </View>
            </Pressable>
