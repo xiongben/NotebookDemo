@@ -7,7 +7,7 @@ import { View, Text, Button } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator,StackNavigationProp } from '@react-navigation/stack';
 
-import ListScreen from "../pages/list";
+
 import ListPage from "../pages/list";
 import DetailScreen from "../pages/detail";
 

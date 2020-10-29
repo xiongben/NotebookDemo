@@ -18,7 +18,7 @@ import { useNavigation } from '@react-navigation/native';
 
 function DetailContent(props:any) {
     // console.log(props.route)
-    const [value, onChangeText] = useState('Useless Placeholder');
+    const [value, onChangeText] = useState('');
     const [targetItem, setTargetItem]:any = useState({});
     const [routerParams,setRouterParams] = useState(props.route.params);
 
@@ -49,7 +49,7 @@ function DetailContent(props:any) {
                 id:lastId+1,
                 status: 0,  //0:need to do ;1:have done
                 text: value,
-                chooseStatus: 0, //0:not choosed; 1:choosed
+                chooseStatus: false,
             })
             actionParams = {
                 newLastId: lastId+1,
@@ -201,7 +201,7 @@ const styles = StyleSheet.create({
         // height:'100%',
         fontSize: 18,
         lineHeight: 28,
-        backgroundColor: '#367'
+        // 6666
     }
 });
 

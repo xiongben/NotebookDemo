@@ -5,9 +5,6 @@ import {
     SafeAreaView,
     StyleSheet,
     ScrollView,
-    View,
-    Text,
-    TextInput,
     Button,
 } from 'react-native';
 
@@ -17,27 +14,35 @@ import {Stack} from './../router/router'
 import OrderItem from "../component/orderItem";
 import Menu from "../component/menu";
 import {useState, useContext, useEffect} from "react";
-import {NoteContext,UPDATE_COLOR} from './../reduxComponent/list';
+import {NoteContext} from './../reduxComponent/list';
 
 
 function ListPage({navigation}:any) {
-    const [itemDataArr,setItemDataArr] = useState([1,2,3,4,5])
     let {state}:any = useContext(NoteContext);
-    console.log("=======list========")
-    console.log(state.noteList)
+    const [itemDataArr,setItemDataArr] = useState(state.noteList)
+    // console.log("=======list========")
+    // console.log(state.noteList)
 
     useEffect(()=>{
+        setItemDataArr(state.noteList);
+    },[state])
 
-    },[])
+
+    function _filterNeedDoneItem() {
+         let filterArr = itemDataArr.filter((item:any,index:number)=>{
+             return item.status == 0;
+         })
+        setItemDataArr(filterArr);
+    }
 
       return(
           <SafeAreaView>
               <ScrollView
                   contentInsetAdjustmentBehavior="automatic"
                   style={styles.scrollView}>
-                  <Menu nav={navigation}/>
+                  <Menu nav={navigation} filterfn={_filterNeedDoneItem}/>
 
-                  {(state.noteList as Array<object>).map((item,index)=>{
+                  {itemDataArr.map((item:any,index:number)=>{
                       return(
                           <OrderItem data={item} key={index} />
                       )

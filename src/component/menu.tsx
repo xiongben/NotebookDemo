@@ -2,18 +2,15 @@ import * as React from 'react';
 
 
 import {
-    SafeAreaView,
     StyleSheet,
-    ScrollView,
     View,
     Image,
     Text,
-    TextInput,
     Button,
     Pressable,
 } from 'react-native';
 import {useState, useContext, useEffect} from "react";
-import {NoteContext,SHOW_CHOOSE_ICON} from './../reduxComponent/list';
+import {NoteContext, SHOW_CHOOSE_ICON, UPDATE_NOTE} from './../reduxComponent/list';
 
 
 function Menu(props:any) {
@@ -27,11 +24,19 @@ function Menu(props:any) {
     },[state])
 
     function _pressfn(){
-        console.log("====dianji=====")
+        props.filterfn();
     }
 
     function _showChooseIcon() {
         let newShowChooseIcon = !state.showChooseIcon;
+        if(!newShowChooseIcon){
+            let newNoteList = new Array();
+            newNoteList = state.noteList;
+            newNoteList.map((item,index)=>{
+                item.chooseStatus = 0;
+            })
+            dispatch({type:UPDATE_NOTE,newNoteList:newNoteList});
+        }
         dispatch({type:SHOW_CHOOSE_ICON,showChooseStatus:newShowChooseIcon})
     }
 
@@ -42,38 +47,58 @@ function Menu(props:any) {
         props.nav.navigate('Detail',{screen: 'DetailPage',params:paramsData})
     }
 
-    function _showDoneList() {
-        let newShowChooseIcon = !state.showChooseIcon;
-        dispatch({type:SHOW_CHOOSE_ICON,showChooseStatus:newShowChooseIcon})
+    function _delChoosefn() {
+        let newNoteList = new Array();
+        newNoteList = state.noteList;
+        newNoteList =newNoteList.filter((item,index)=>{
+            return item.chooseStatus == 0;
+        })
+        console.log(newNoteList);
+        dispatch({type:UPDATE_NOTE,newNoteList:newNoteList});
+
     }
+
+
 
    return(
        <View style={styles.menuBox}>
-           <Pressable onPress={()=>_pressfn()}>
-               <View style={styles.needTodo}>
-                   <Image style={styles.icon1} source={require('./../assets/img/warn_icon.png')}/>
-                   <Text style={styles.todoText}> {needDoneNum}</Text>
-               </View>
-           </Pressable>
-           <Pressable onPress={()=>_addNote()}>
-               <View style={styles.menuLi}>
-                   <Image style={styles.icon1} source={require('./../assets/img/add_icon.png')}/>
-               </View>
-           </Pressable>
+           {
+               !state.showChooseIcon?
+                   (
+                       <Pressable onPress={()=>_pressfn()}>
+                           <View style={styles.needTodo}>
+                               <Image style={styles.icon1} source={require('./../assets/img/warn_icon.png')}/>
+                               <Text style={styles.todoText}> {needDoneNum}</Text>
+                           </View>
+                       </Pressable>
+                   ):null
+           }
+           {
+               !state.showChooseIcon?
+                   (
+                       <Pressable onPress={()=>_addNote()}>
+                           <View style={styles.menuLi}>
+                               <Image style={styles.icon1} source={require('./../assets/img/add_icon.png')}/>
+                           </View>
+                       </Pressable>
+                   ):null
+           }
+
+           {
+               state.showChooseIcon?
+                   (
+                       <Pressable onPress={()=>_delChoosefn()}>
+                           <View style={styles.menuLi}>
+                               <Image style={styles.icon1} source={require('./../assets/img/delete_icon.png')}/>
+                           </View>
+                       </Pressable>
+                   ):null
+           }
            <Pressable onPress={()=>_showChooseIcon()}>
                <View style={styles.menuLi}>
                    <Image style={styles.icon1} source={require('./../assets/img/list_icon.png')}/>
                </View>
            </Pressable>
-           <Pressable onPress={()=>_pressfn()}>
-               <View style={styles.menuLi}>
-                   <Button
-                       title="Go to Details"
-                       onPress={() => props.nav.navigate('Detail',{screen: 'DetailPage',params:{type:123}})}
-                   />
-               </View>
-           </Pressable>
-
        </View>
    )
 }

@@ -16,13 +16,13 @@ let initData = {
             id:1,
             status: 0,  //0:need to do ;1:have done
             text: "this is a test message",
-            chooseStatus: 0, //0:not choosed; 1:choosed
+            chooseStatus: false,
         },
         {
             id:2,
             status: 0,  //0:need to do ;1:have done
             text: "this is a test message",
-            chooseStatus: 0, //0:not choosed; 1:choosed
+            chooseStatus: false,
         },
     ],
     showChooseIcon: false,
